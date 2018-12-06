@@ -5,7 +5,7 @@
 + 此网站(www.ershoufangdata.com) 利用该项目爬虫数据提供房价的可视化分析，帮助用户更好的评估房产和预测未来的价格，欢迎使用！
 + **如果觉得好，请给项目点颗星来支持吧～～** 
 
-![alt text](https://github.com/XuefengHuang/lianjia-scrawler/blob/master/screenshots/homepage.png)
+![alt text](https://github.com/XuefengHuang/lianjia-scrawler/blob/master/screenshots/homepage_1.png)
 
 ## 使用说明
 + 下载源码并安装依赖包
@@ -86,4 +86,4 @@ woaiwojia.GetSellByCommunitylist()
 ```
 
 ## 更多截图
-![alt text](https://github.com/XuefengHuang/lianjia-scrawler/blob/master/screenshots/community.png)
+![alt text](https://github.com/XuefengHuang/lianjia-scrawler/blob/master/screenshots/community_1.png)
