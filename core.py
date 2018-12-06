@@ -132,7 +132,7 @@ def get_house_percommunity(city, communityname):
                 info_dict.update({u'link': housetitle.a.get('href')})
 
                 houseaddr = name.find("div", {"class": "address"})
-                if CITY == 'bj':
+                if city == 'bj':
                     info = houseaddr.div.get_text().split('/')
                 else:
                     info = houseaddr.div.get_text().split('|')
