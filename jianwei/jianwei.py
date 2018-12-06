@@ -1,4 +1,6 @@
-#! usr/bin/python #coding=utf-8
+#! usr/bin/python
+# coding=utf-8
+from __future__ import print_function
 import os
 import requests
 from bs4 import BeautifulSoup
@@ -109,4 +111,4 @@ for i in range(0, PAGE + 1):
         info_dict.update({'time': td[7].get_text().strip()})
         info_dict.update({'url': BASE_URL + td[8].a.get('href')})
         parse_house(BASE_URL + td[8].a.get('href'), info_dict)
-    print 'Page%d Finish' % i
+    print('Page%d Finish' % i)
