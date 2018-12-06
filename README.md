@@ -47,25 +47,25 @@ regionlist = ['chaoyang', 'haidian'] 目前仅支持拼音
 communitylist = [u'万科星园', u'上地东里']
 
 根据行政区来爬虫小区信息, 返回regionlist里面所有小区信息。
-core.GetCommunityByRegionlist(regionlist)
+core.GetCommunityByRegionlist(city, regionlist)
 
 根据行政区来爬虫在售房源信息， 返回regionlist里面所有在售房源信息。
 由于链家限制，仅支持爬前100页数据，可使用GetHouseByCommunitylist。
-core.GetHouseByRegionlist(regionlist)
+core.GetHouseByRegionlist(city, regionlist)
 
 根据小区来爬虫在售房源房源信息，返回communitylist里面所有在售房源信息。
-core.GetHouseByCommunitylist(communitylist)
+core.GetHouseByCommunitylist(city, communitylist)
 
 根据行政区来爬虫出租房源信息，返回regionlist里面所有出租房源信息。
 由于链家限制，仅支持爬前100页数据，可使用GetRentByCommunitylist。
-core.GetRentByRegionlist(regionlist) 
+core.GetRentByRegionlist(city, regionlist)
 
 根据小区来爬虫出租房源信息，返回communitylist里面所有出租房源信息。
-core.GetRentByCommunitylist(communitylist)
+core.GetRentByCommunitylist(city, communitylist)
 
 根据小区来爬虫成交房源信息，返回communitylist里面所有成交房源信息。
 部分数据无法显示因为这些数据仅在链家app显示
-core.GetSellByCommunitylist(communitylist)
+core.GetSellByCommunitylist(city, communitylist)
 
 
 ```
