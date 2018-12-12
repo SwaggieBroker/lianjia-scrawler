@@ -56,8 +56,9 @@ def get_total_pages(url):
     except AttributeError as e:
         page_info = None
 
+    # if it doesnot get total page, then return default value 50
     if page_info == None:
-        return None
+        return 50
     # '{"totalPage":5,"curPage":1}'
     page_info_str = page_info.get('page-data').split(',')[0]
     total_pages = int(page_info_str.split(':')[1])
