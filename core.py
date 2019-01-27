@@ -4,8 +4,10 @@ import model
 import misc
 import time
 import datetime
-import urllib2
+import urllib.request as urllib2
 import logging
+import json
+import sys, traceback
 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -257,7 +259,9 @@ def get_sell_percommunity(city, communityname):
                     info_dict.update(
                         {u'dealdate': dealDate.get_text().strip().replace('.', '-')})
 
-                except:
+                except Exception as e:
+                    traceback.print_exc()
+
                     continue
                 # Sellinfo insert into mysql
                 data_source.append(info_dict)
@@ -273,6 +277,8 @@ def get_community_perregion(city, regionname=u'xicheng'):
     baseUrl = u"http://%s.lianjia.com/" % (city)
     url = baseUrl + u"xiaoqu/" + regionname + "/"
     source_code = misc.get_source_code(url)
+    # logging.info('checking raw response')
+    # print(source_code)
     soup = BeautifulSoup(source_code, 'lxml')
 
     if check_block(soup):
@@ -286,10 +292,13 @@ def get_community_perregion(city, regionname=u'xicheng'):
     for page in range(total_pages):
         if page > 0:
             url_page = baseUrl + u"xiaoqu/" + regionname + "/pg%d/" % page
+            logging.info("fetching from %s", url_page)
             source_code = misc.get_source_code(url_page)
             soup = BeautifulSoup(source_code, 'lxml')
 
-        nameList = soup.findAll("li", {"class": "clear"})
+        # logging.info("querying for page %d content", page)
+        nameList = soup.findAll("li", {"class": "xiaoquListItem"})
+        # logging.info("checking community list length: %d", len(nameList))
         i = 0
         log_progress("GetCommunityByRegionlist",
                      regionname, page + 1, total_pages)
@@ -327,18 +336,23 @@ def get_community_perregion(city, regionname=u'xicheng'):
                 info_dict.update({u'price': price.span.get_text().strip('\n')})
 
                 communityinfo = get_communityinfo_by_url(link)
-                for key, value in communityinfo.iteritems():
+                for key, value in communityinfo.items():
                     info_dict.update({key: value})
 
                 info_dict.update({u'city': city})
-            except:
+                # logging.info('community info: %s', json.dumps(info_dict))
+            except Exception as e:
+                traceback.print_exc()
                 continue
             # communityinfo insert into mysql
             data_source.append(info_dict)
             # model.Community.insert(**info_dict).upsert().execute()
         with model.database.atomic():
             if data_source:
+                # logging.info("checking data: %s", ''.join(data_source))
+                # logging.info("inserting community info into db")
                 model.Community.insert_many(data_source).upsert().execute()
+                # logging.info("insertion succeeds")
         time.sleep(1)
 
 
@@ -418,7 +432,8 @@ def get_rent_percommunity(city, communityname):
                     info_dict.update(
                         {u'pricepre': pricepre.get_text().strip()})
 
-                except:
+                except Exception as e:
+                    traceback.print_exc()
                     continue
                 # Rentinfo insert into mysql
                 data_source.append(info_dict)
@@ -426,6 +441,7 @@ def get_rent_percommunity(city, communityname):
 
         with model.database.atomic():
             if data_source:
+
                 model.Rentinfo.insert_many(data_source).upsert().execute()
         time.sleep(1)
 
@@ -496,7 +512,8 @@ def get_house_perregion(city, district):
                     unitPrice = name.find("div", {"class": "unitPrice"})
                     info_dict.update(
                         {u'unitPrice': unitPrice.get("data-price")})
-                except:
+                except Exception as e:
+                    traceback.print_exc()
                     continue
 
                 # Houseinfo insert into mysql
@@ -518,6 +535,7 @@ def get_house_perregion(city, district):
 def get_rent_perregion(city, district):
     baseUrl = u"http://%s.lianjia.com/" % (city)
     url = baseUrl + u"zufang/%s/" % district
+    # logging.info("checking url: %s", url)
     source_code = misc.get_source_code(url)
     soup = BeautifulSoup(source_code, 'lxml')
     if check_block(soup):
@@ -588,7 +606,8 @@ def get_rent_perregion(city, district):
                     info_dict.update(
                         {u'pricepre': pricepre.get_text().strip()})
 
-                except:
+                except Exception as e:
+                    traceback.print_exc()
                     continue
                 # Rentinfo insert into mysql
                 data_source.append(info_dict)
@@ -596,6 +615,8 @@ def get_rent_perregion(city, district):
 
         with model.database.atomic():
             if data_source:
+                logging.info("checking rent info: %s", ''.join(data_source))
+                logging.info("inserting rent info into db")
                 model.Rentinfo.insert_many(data_source).upsert().execute()
         time.sleep(1)
 
