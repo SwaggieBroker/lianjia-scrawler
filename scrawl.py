@@ -10,13 +10,25 @@ def get_communitylist(city):
             res.append(community.title)
     return res
 
+def start_scrawling(firstTime=False):
+    regionlist = settings.REGIONLIST  # only pinyin support
+    city = settings.CITY
+    model.database_init()
+    core.GetHouseByRegionlist(city, regionlist)
+    core.GetRentByRegionlist(city, regionlist)
+    # Init,scrapy celllist and insert database; could run only 1st time
+    if firstTime:
+        core.GetCommunityByRegionlist(city, regionlist)
+    communitylist = get_communitylist(city)  # Read celllist from database
+    core.GetSellByCommunitylist(city, communitylist)
+
 if __name__ == "__main__":
     regionlist = settings.REGIONLIST  # only pinyin support
     city = settings.CITY
-    # model.database_init()
-    # core.GetHouseByRegionlist(city, regionlist)
+    model.database_init()
+    core.GetHouseByRegionlist(city, regionlist)
     core.GetRentByRegionlist(city, regionlist)
     # Init,scrapy celllist and insert database; could run only 1st time
-    # core.GetCommunityByRegionlist(city, regionlist)
+    core.GetCommunityByRegionlist(city, regionlist)
     communitylist = get_communitylist(city)  # Read celllist from database
-    # core.GetSellByCommunitylist(city, communitylist)
+    core.GetSellByCommunitylist(city, communitylist)
