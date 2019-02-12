@@ -467,8 +467,9 @@ def get_house_perregion(city, district):
         log_progress("GetHouseByRegionlist", district, page + 1, total_pages)
         data_source = []
         hisprice_data_source = []
-        for ultag in soup.findAll("ul", {"class": "sellListContent"}):
-            for name in ultag.find_all('li'):
+
+        for ultag in soup.find("ul", {"class": "sellListContent"}):
+            for name in ultag.find_all("li", {"class": "LOGCLICKDATA"}):
                 i = i + 1
                 info_dict = {}
                 try:
