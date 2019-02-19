@@ -38,7 +38,6 @@ if __name__ == "__main__":
   schedule.every().day.do(job_sell).run();
   schedule.every().day.do(job_rent).run();
   schedule.every().day.do(job_house).run();
-
   while(True):
     schedule.run_pending();
     time.sleep(600);
