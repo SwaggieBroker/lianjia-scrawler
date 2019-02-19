@@ -15,4 +15,8 @@ def job():
 if __name__ == "__main__":
   print('Starting...');
   job_count = 0
-  schedule.every().day.do(job);
+  schedule.every().day.do(job).run();
+
+  while(True):
+    schedule.run_pending();
+    time.sleep(600);
